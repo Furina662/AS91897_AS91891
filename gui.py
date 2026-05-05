@@ -1,6 +1,6 @@
 import tkinter as tk
 import json
-from calculate import calculate
+import calculate
 
 with open("json/subject.json", "r") as file:
     data = json.load(file)
@@ -82,6 +82,11 @@ def switch_to_saved_page():
         frame.grid_forget()
     course_page.grid_forget()
     saved_page.grid(row=0, column=0, sticky="nsew")
+#===============================================================
+def transmit_data():
+    calculate.saved_grades_list = saved_grades_list
+    total_credits, rank_score = calculate.calculate()
+    print(f"Total Credits: {total_credits}, Rank Score: {rank_score}")  
 #===============================================================
 #display subjects and standards
 for subject_name,subject_data in data["ncea_level_3_standards"].items():
@@ -202,6 +207,6 @@ tk.Button(
     saved_page,
     text="Calculate Rank Score",
     font=("Arial", 14, "bold"),
-    command=switch_to_course_page
+    command= transmit_data
 ).grid(row=4, column=3, pady=10)
 root.mainloop()

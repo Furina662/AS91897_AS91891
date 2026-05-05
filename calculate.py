@@ -1,18 +1,25 @@
+saved_grades_list = {}
 def calculate():
     grade_points = {
-        'E': 4,
-        'M': 3,
-        'A': 2,
+        'Excellence': 4,
+        'Merit': 3,
+        'Achieved': 2,
     }
+    calculate_list = []
+    for subject_data in saved_grades_list.values():
+        for standard in subject_data.values():
+            if standard['grade'] in grade_points:
+                calculate_list.append(standard)
+
     def get_point(standard):
         return grade_points.get(standard['grade'], 0)
 
-    standards.sort(key=get_point, reverse=True)
+    calculate_list.sort(key=get_point, reverse=True)
 
     total_credits = 0
     rank_score = 0
 
-    for standard in standards:
+    for standard in calculate_list:
         if total_credits >= 80:
             break
 
@@ -30,25 +37,3 @@ def calculate():
         total_credits,
         rank_score
     )
-
-standards = [
-    {'grade': 'E', 'credits': '4'},
-    {'grade': 'E', 'credits': '4'},
-    {'grade': 'M', 'credits': '5'},
-    {'grade': 'A', 'credits': '3'},
-    {'grade': 'E', 'credits': '3'},
-    {'grade': 'M', 'credits': '6'},
-    {'grade': 'A', 'credits': '5'},
-    {'grade': 'E', 'credits': '2'},
-    {'grade': 'E', 'credits': '5'},
-    {'grade': 'E', 'credits': '5'},
-    {'grade': 'E', 'credits': '5'},
-    {'grade': 'E', 'credits': '5'},
-    {'grade': 'E', 'credits': '5'},
-    {'grade': 'E', 'credits': '5'},
-    {'grade': 'E', 'credits': '5'},
-    {'grade': 'A', 'credits': '8'},
-    {'grade': 'A', 'credits': '8'},
-
-]
-print(calculate())
