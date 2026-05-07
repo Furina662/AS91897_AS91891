@@ -83,12 +83,13 @@ def switch_to_saved_page():
     course_page.grid_forget()
     saved_page.grid(row=0, column=0, sticky="nsew")
 #===============================================================
+#transmit data to calculate.py
 def transmit_data():
     calculate.saved_grades_list = saved_grades_list
     total_credits, rank_score = calculate.calculate()
     print(f"Total Credits: {total_credits}, Rank Score: {rank_score}")  
 #===============================================================
-#display subjects and standards
+#display subjects and standards in standard page
 for subject_name,subject_data in data["ncea_level_3_standards"].items():
 
     frame = tk.Frame(root)
@@ -162,7 +163,7 @@ for subject_name,subject_data in data["ncea_level_3_standards"].items():
     pages[subject_name] = frame
 
 #===============================================================
-#add buttons in course page
+#add buttons and show subject name in course page
 row = 1
 col = 0
 for subject_name in pages:
@@ -194,8 +195,10 @@ tk.Label(
     anchor="center",
     font=("Arial", 25, "bold")
     ).grid(row=1, column=0, columnspan=4, sticky="nsew")
+
 saved_frame = tk.Frame(saved_page)
 saved_frame.grid(row=2 , column=0, columnspan=4, pady=10)
+
 tk.Button(
     saved_page,
     text="Add more subjects",
@@ -209,4 +212,7 @@ tk.Button(
     font=("Arial", 14, "bold"),
     command= transmit_data
 ).grid(row=4, column=3, pady=10)
+#===============================================================
+#result page
+
 root.mainloop()
