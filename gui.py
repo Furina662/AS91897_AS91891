@@ -16,6 +16,8 @@ course_page.grid(row=0, column=0)
 course_page.grid_columnconfigure((0,1,2,3), weight=1)
 saved_page = tk.Frame(root)
 saved_page.grid_columnconfigure((0,1,2,3), weight=1)
+result_page = tk.Frame(root)
+result_page.grid_columnconfigure((0,1,2,3), weight=1)
 tk.Label(course_page, text="Please select your course below:", font=("Arial", 25, "bold")).grid(row=0, column=0, columnspan=3, sticky="ew")
 
 pages = {}
@@ -82,12 +84,26 @@ def switch_to_saved_page():
         frame.grid_forget()
     course_page.grid_forget()
     saved_page.grid(row=0, column=0, sticky="nsew")
+
+def switch_to_result_page():
+    for frame in pages.values():
+        frame.grid_forget()
+    course_page.grid_forget()
+    saved_page.grid_forget()
+    result_page.grid(row=0, column=0, sticky="nsew")
 #===============================================================
 #transmit data to calculate.py
 def transmit_data():
     calculate.saved_grades_list = saved_grades_list
     total_credits, rank_score = calculate.calculate()
     print(f"Total Credits: {total_credits}, Rank Score: {rank_score}")  
+
+    tk.Label(
+    result_page,
+    text=(f"Total Credits: {total_credits}, Rank Score: {rank_score}"),
+    anchor="center",
+    font=("Arial", 25, "bold")
+    ).grid(row=5, column=0, columnspan=4, sticky="nsew")
 #===============================================================
 #display subjects and standards in standard page
 for subject_name,subject_data in data["ncea_level_3_standards"].items():
@@ -210,9 +226,10 @@ tk.Button(
     saved_page,
     text="Calculate Rank Score",
     font=("Arial", 14, "bold"),
-    command= transmit_data
+    command= lambda: (transmit_data(), switch_to_result_page())
 ).grid(row=4, column=3, pady=10)
 #===============================================================
 #result page
+
 
 root.mainloop()
