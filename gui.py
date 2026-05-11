@@ -9,6 +9,7 @@ root = tk.Tk()
 root.title("UE Rank Score Calculator")
 root.geometry('1600x900')
 #===============================================================
+#configure pages
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 course_page= tk.Frame(root)
@@ -18,14 +19,14 @@ saved_page = tk.Frame(root)
 saved_page.grid_columnconfigure((0,1,2,3), weight=1)
 result_page = tk.Frame(root)
 result_page.grid_columnconfigure((0,1,2,3), weight=1)
-tk.Label(course_page, text="Please select your course below:", font=("Arial", 25, "bold")).grid(row=0, column=0, columnspan=3, sticky="ew")
-
+#reset variables
 pages = {}
 drop_down_vars = {}
 saved_grades_list = {}
 #===============================================================
 #saved subject function
 def update_saved_subject_list_function():
+    #clear last time saved subject before choose new subject
     for widget in saved_frame.winfo_children():
         widget.destroy()
 
@@ -148,9 +149,13 @@ for subject_name,subject_data in data["ncea_level_3_standards"].items():
                 anchor="center",
                 pady=10,
                 font=("Arial", 16)).grid(row=i+2, column=2, sticky="nsew")
+        #create drop down menu for grade selection
         var = tk.StringVar()
+        #set default value of drop down menu to "Not Attempted"
         var.set("Not Attempted")
+
         drop_down_menu = tk.OptionMenu(frame, var, *grade)
+        #configure font of drop down menu
         drop_down_menu.config(
             font=("Arial", 14)
         )
@@ -162,6 +167,7 @@ for subject_name,subject_data in data["ncea_level_3_standards"].items():
             column=3,
             sticky="nsew"
         )
+        #store the var of drop down menu in a dict
         drop_down_vars[(subject_name, standard['Assessment-standard'])] = var
     tk.Button(
         frame,
@@ -179,6 +185,9 @@ for subject_name,subject_data in data["ncea_level_3_standards"].items():
     pages[subject_name] = frame
 
 #===============================================================
+#add title for course page
+tk.Label(course_page, text="Please select your course below:", font=("Arial", 25, "bold")).grid(row=0, column=0, columnspan=3, sticky="ew")
+
 #add buttons and show subject name in course page
 row = 1
 col = 0
@@ -191,7 +200,7 @@ for subject_name in pages:
         height=2,
         command=lambda n=subject_name: switch_to_standard_page(n)
     ).grid(row=row, column=col, padx=10, pady=10)
-
+    #when col is 3, move to next row and reset col to 0
     col += 1
     if col == 3:
         col = 0
