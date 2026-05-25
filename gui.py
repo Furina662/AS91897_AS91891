@@ -96,9 +96,10 @@ def switch_to_result_page():
 #transmit data to calculate.py
 def transmit_data():
     calculate.saved_grades_list = saved_grades_list
-    total_credits, rank_score = calculate.calculate()
+    total_credits, rank_score, calculated_list= calculate.calculate()
     print(f"Total Credits: {total_credits}, Rank Score: {rank_score}")  
-
+    print (calculated_list)
+    
     tk.Label(
     result_page,
     text=(f"Total Credits: {total_credits}, Rank Score: {rank_score}"),
